@@ -97,6 +97,72 @@ if __name__ == '__main__':
     fptr.write(str(result) + '\n')
     fptr.close()
 
+
+
+# INSERTION SORT #1
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'insertionSort1' function below.
+#
+# The function accepts following parameters:
+#  1. INTEGER n
+#  2. INTEGER_ARRAY arr
+#
+
+def insertionSort1(n, arr):
+    # Write your code here
+    last = arr[n - 1]
+    arr[n - 1] = arr[n - 2] # first swap because the rightmost element isn't sorted
+    i = n - 1 # iterate over the array right to left
+    while i >= 0:
+        if last < arr[i]: # check if the element to sort is loweer
+            if i != 0: # if it's lower and we aren't scanning the position 0
+                arr[i] = arr[i - 1] # swap the element
+            else: # if i == 0
+                arr[i] = last # the elem
+                print(' '.join([str(c) for c in arr])) # print the list as string with .join() functione
+                return
+        if last > arr[i]: # if the element to sort is bigger than the oen we are analizing, we update the i-th element with last
+            arr[i] = last
+            print(' '.join([str(c) for c in arr])) # print the list as string with .join() functione
+            return
+        print(' '.join([str(c) for c in arr])) # print the list as string with .join() functione
+        i -= 1 # decrement
+    return
+    
+if __name__ == '__main__':
+    n = int(input().strip())
+
+    arr = list(map(int, input().rstrip().split()))
+
+    insertionSort1(n, arr)
+
+
+
+# INSERTION SORT 2
+def insertionSort2(n, arr):
+    # Write your code here
+    for i in range(1, n): # first for loop to iterate over 'arr', choose the element to analyze
+        for j in range(i): # inside the first loop there is gonna be a loop from 0 to i, to iterate over the elements on the left of the one we are analyzing
+            if arr[i] < arr[j]: # if the element we are analyzing is lower then the one we are comparing with
+                aux = arr[i] # swap the element
+                arr[i] = arr[j]
+                arr[j] = aux
+        print(' '.join([str(el) for el in arr])) # print the list as string with the .join() method
+
+if __name__ == '__main__':
+    n = int(input().strip())
+    arr = list(map(int, input().rstrip().split()))
+    insertionSort2(n, arr)
+
+
 # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 # ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

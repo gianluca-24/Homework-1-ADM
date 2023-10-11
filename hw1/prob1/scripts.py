@@ -339,8 +339,46 @@ def solve(s):
     string = re.split(r'(\s+)',s)
     return ''.join([w.capitalize() if w.strip() else w for w in string]) # return the string using .join() and passing as parameter a list obtained from a list comprehension that applies capitalize() method to each word of string
 
-# MERGE THE TOOLS TODO
-# THE MINION GAME TODO
+# MERGE THE TOOLS
+def merge_the_tools(string, k):
+    # your code goes here
+    length = len(string)
+    for i in range(0, length, k): # iterate over 0-length updating 'i' adding 'k' each loop
+        aux = '' # auxiliar string to print
+        for c in string[i: i + k]: # loop over substring
+            if c not in aux: # if the char is not already inserted
+                aux += c # add the char to the auxiliar string
+        print(aux) # print the substring 
+    return
+    
+if __name__ == '__main__':
+    string, k = input(), int(input())
+    merge_the_tools(string, k)
+
+
+# THE MINION GAME
+def minion_game(string):
+    # your code goes here
+    count_vow = 0 # initialize vars that count how many vowels and how many consonants
+    count_cons = 0
+    for x in range(len(string)): # iterate over the whole string
+        # I noticed that starting from a char at position x, 
+        # there will be len(string) - x substrings starting with that char. So it's enough one for loop
+        if string[x] in 'AEIOU': # if the char I'm analyzing id a vowel
+            count_vow += len(string) - x # increase the number of substring which starts with a vowel of the number of remaining chars
+        else:
+            count_cons += len(string) - x # increase the number of substring which starts with a consonant of the number of remaining chars
+    if count_cons > count_vow: # if there are more cons than vows
+        print('Stuart ' + str(count_cons)) # stuart wins
+    elif count_cons < count_vow: # if there are more vows
+        print('Kevin ' + str(count_vow)) # kevin wins
+    else:
+        print('Draw') # else they draw
+        
+        
+if __name__ == '__main__':
+    s = input()
+    minion_game(s)
 
 # ------------------------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------SETS----------------------------------------------------------------
@@ -644,7 +682,29 @@ if __name__ == '__main__':
     for key, value in sorted_diz.items(): # for loop to print the couple key, value
         print(key + ' ' + str(value))
 
-# PILING UP! TODO
+# PILING UP!
+from collections import deque # use deque to be able to perform pop() and popleft(), so that I can remove both the rightmost and the leftmost element
+t = int(input()) # number of tests
+for _ in range(t):
+    length = int(input()) # number of blocks
+    d = deque([int(x) for x in input().split()]) # initialize deque
+    output = 'Yes' #auxiliar variable to save the output
+    res = [] # auxiliar array to save the removed element
+    for _ in range(length): # for loop over range length because I remove one element per loop
+        if d: # if d is not null
+            if d[len(d) - 1] > d[0]: # if last element is greater than the first
+                elem = d.pop() # choose the rightmost
+            else: # otherwise
+                elem = d.popleft() # choose the leftmost
+            if len(res) == 0: # check if there is at least one element in res. 
+                res.append(elem) # If there isn't any, just appen 'elem'
+            else: # if there is at least one element
+                if elem > res[len(res) - 1]: # check if the one we are appending is greater than the last element in the list.
+                    output = 'No' # if so, we can't build the pile
+                    break # break the loop to return 'output'
+    print(output)
+
+
 
 # ---------------------------------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------DATE AND TIME----------------------------------------------------------------
@@ -905,9 +965,73 @@ for el in lista:
     if el != '': # there are some matches with empty string because the relative gorup hasn't found a match in that line
         print(el)
 
-# HTML PARSER - PART 1 TODO
-# HTML PARSER - PART 2 TODO
-# DETECT HTML TAGS, ATTRIBUTES AND ATTRIBUTES VALUES TODO
+# HTML PARSER - PART 1
+from html.parser import HTMLParser # import parser library
+# create parser class and override the functions
+class MyHTMLParser(HTMLParser):
+    def handle_starttag(self, tag, attrs): # override handle_startag
+        print('Start : ' + tag) # print with the desired format
+        for atb in attrs: # print the attributes
+            print('-> ' + atb[0] + ' > ' + str(atb[1]))
+            
+    def handle_endtag(self, tag):
+        print('End   : ' + tag) # print with the desired format
+            
+    def handle_startendtag(self, tag, attrs):
+        print('Empty : ' + tag.strip()) # print with the desired format
+        for atb in attrs: # print the attributes
+            print('-> ' + atb[0] + ' > ' + str(atb[1])) # print with the desired format
+        
+n = int(input()) # number of lines
+parser = MyHTMLParser() # create an instance of the parser with the constructor
+for _ in range(n):
+    line = input().strip() # line of code
+    parser.feed(line) # give html code to the parser
+    
+# HTML PARSER - PART 2
+from html.parser import HTMLParser
+
+class MyHTMLParser(HTMLParser): # create html parser class
+    def handle_comment(self, data): # define the function to handle comments
+        if data.count('\n') >= 1: # check if it's a multi-line comment
+            print('>>> Multi-line Comment')
+        else: # otherwise it's a single line comment
+            print('>>> Single-line Comment')
+        print(data)
+        
+    def handle_data(self, data): # define the function to handle data
+        if data != '\n': # Do not print data if data == '\n'.
+            print('>>> Data') 
+            print(data)
+html = ""       
+for i in range(int(input())):
+    html += input().rstrip()
+    html += '\n'
+    
+parser = MyHTMLParser()
+parser.feed(html)
+parser.close()
+
+
+# DETECT HTML TAGS, ATTRIBUTES AND ATTRIBUTES VALUES
+from html.parser import HTMLParser # import parser library
+# create parser class and override the functions
+class MyHTMLParser(HTMLParser):
+    def handle_starttag(self, tag, attrs): # override handle_startag
+        print(tag) # print with the desired format
+        for atb in attrs: # print the attributes
+            print('-> ' + atb[0] + ' > ' + str(atb[1]))
+            
+    def handle_startendtag(self, tag, attrs):
+        print(tag.strip()) # print with the desired format
+        for atb in attrs: # print the attributes
+            print('-> ' + atb[0] + ' > ' + str(atb[1])) # print with the desired format
+        
+n = int(input()) # number of lines
+parser = MyHTMLParser() # create an instance of the parser with the constructor
+for _ in range(n):
+    line = input().strip() # line of code
+    parser.feed(line) # give html code to the parser
 
 # VALIDATING UID
 t = int(input()) # number of tests
